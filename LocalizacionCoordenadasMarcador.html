@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script
+src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByfeOlpVzahVyPOviSatbhFTwI8GtPpPQ&callback=initMap">
+</script>
+
+<script>
+
+var trebujena=new google.maps.LatLng(36.8704663,-6.175237700000025); //Posicion de trebujena, inicialización del mapa
+var map = null; //Mapa
+var infowindow = null; //Ventana
+ 
+//Inicializo el mapa
+function initialize(){
+//Opciones de mapa
+var MyOptions = {
+  center: trebujena,
+  zoom:15,
+  mapTypeId: google.maps.MapTypeId.ROADMAP
+  };
+
+//Creo un objeto de tipo google.maps,y le mando el div de la capa y las opciones
+var map = new google.maps.Map(document.getElementById("googleMap"),MyOptions);
+
+//Creo un marcador inicial
+var marker = new google.maps.Marker({
+  position: trebujena, //Tiene la posicion de trebujena
+  draggable: true, //Arrastrable
+  animation: google.maps.Animation.DROP,
+  title:'Click para mostrar coordenadas',
+  
+  });
+
+marker.setMap(map); //Asigno el marcador inicial al mapa
+
+//Con el modelo dom cojo la posición actual del marcador para mostrarlas en las cajas de texto
+document.getElementById('lat').value=marker.getPosition().lat();
+document.getElementById('lng').value=marker.getPosition().lng();
+
+//Creo un objeto de tipo infowindow
+infowindow = new google.maps.InfoWindow({
+  content:'La latitud es: '+ marker.getPosition().lat()+', '+' La longitud es:'+marker.getPosition().lng()
+  
+  });
+//Función que modifica las coordenadas cuando cambio de sitio el marcador
+ function changeInfoWindow(marker) {
+var lat=marker.getPosition().lat();
+var lng=marker.getPosition().lng();
+document.getElementById('lat').value=lat;
+document.getElementById('lng').value=lng;
+infowindow.setContent('La latitud es: '+lat+', '+' La longitud es:'+lng);	 
+}
+/////////////////////////EVENTOS/////////////////////
+//Evento clik
+google.maps.event.addListener(marker, 'click', function() {
+map.setCenter(marker.getPosition());
+ infowindow.open(map,marker);
+  });
+//Evento de arrastrado
+google.maps.event.addListener(marker, 'dragend', function(){
+	infowindow.open(map,marker);//Abro la ventana
+	changeInfoWindow(marker); //Cambio el marcador
+	});
+}
+
+google.maps.event.addDomListener(window, 'load', initialize); //Evento de inicio para cargar el mapa
+
+//https://developers.google.com/maps/documentation/javascript/examples/
+
+</script>
+</head>
+
+<body>
+<div id="googleMap" style="width:500px;height:380px;"></div>
+<input type="text" id="lat"/>
+<input type="text" id="lng"/>
+
+</body>
+</html>
