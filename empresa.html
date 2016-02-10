@@ -1,0 +1,55 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Documento sin título</title>
+<style type="text/css">
+      html, body { margin: 0; padding: 0; }
+      #map {  100%; }
+    </style>
+<script>
+function initMap() {
+	//Posicion de trebujena
+  var myLatLng = {lat:36.8704663, lng:-6.175237700000025};
+  //Posicion de mi empresa
+  var myposemp = {lat:36.868471, lng: -6.175283};
+
+  // Creo el objeto map y lo asigno con el modelo dom
+  var map = new google.maps.Map(document.getElementById('map'), {
+    center: myLatLng,
+    scrollwheel: false,
+    zoom: 14
+  });
+  
+  
+
+  // Creando el marcador
+  var marker = new google.maps.Marker({
+    map: map,
+    position: myposemp,
+    title: '!Reparaciones Trebujena!'
+	});
+	//Informacion marcador
+	//<img src="imagenes/bid.png" alt="Facultad de Biblioteconomía i Documentación" />'
+	var contentString = '<h1>Trebujena Reparaciones</h1><p>Dirección: Calle xxx, 140, 08014 Trebujena.</p><p>Telefono: 601-31-74-12</p>';
+
+//Objeto infowindow para mostrar informacion de mi empresa
+  var infowindow = new google.maps.InfoWindow({
+    content: contentString
+  });
+  //Evento del click apra mostrar informacion
+  marker.addListener('click', function() {
+    infowindow.open(map, marker);
+  });
+	
+}
+</script>
+</head>
+
+<body>
+<div id="map" style="width:500px;height:380px;"></div>
+ <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyByfeOlpVzahVyPOviSatbhFTwI8GtPpPQ&callback=initMap">
+    </script>
+</body>
+</html>
